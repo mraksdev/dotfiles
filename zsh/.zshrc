@@ -30,7 +30,9 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 alias v='nvim'
 alias ya='cd /mnt/c/Users/akryl/Desktop/Yandex/'
 alias c="clear"
-alias la="ls -lah"
+alias ls="lsd"
+alias ll="ls -l"
+alias la="ls -lA"
 alias ..="cd .."
 
 # Pyenv add to path for pyrhon version controll
