@@ -36,6 +36,7 @@ alias la="ls -lA"
 alias ..="cd .."
 alias avenv="source venv/bin/activate"
 alias dvenv="deactivate"
+alias pman="sudo pacman"
 
 # Pyenv add to path for pyrhon version controll
 export PYENV_ROOT="$HOME/.pyenv"
