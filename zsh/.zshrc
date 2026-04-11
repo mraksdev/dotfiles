@@ -34,6 +34,8 @@ alias ls="lsd"
 alias ll="ls -l"
 alias la="ls -lA"
 alias ..="cd .."
+alias avenv="source venv/bin/activate"
+alias dvenv="deactivate"
 
 # Pyenv add to path for pyrhon version controll
 export PYENV_ROOT="$HOME/.pyenv"
@@ -75,4 +77,4 @@ bindkey '^[w' kill-region
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls $realpath'
