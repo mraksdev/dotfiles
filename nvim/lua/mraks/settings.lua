@@ -39,6 +39,7 @@ vim.opt.isfname:append("@-@")
 vim.opt.fillchars = { eob = " " }
 
 vim.opt.updatetime = 50
+vim.o.timeoutlen = 300
 
 vim.o.inccommand = "split"
 
