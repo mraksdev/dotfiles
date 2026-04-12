@@ -3,7 +3,7 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		-- optional but recommended
-		--{'nvim-telescope/telescope-fzf-native.nvim'}
+		{ "nvim-telescope/telescope-fzf-native.nvim" },
 	},
 	defaults = {
 		preview = {
@@ -13,10 +13,10 @@ return {
 	config = function()
 		require("telescope").setup({})
 		local builtin = require("telescope.builtin")
-		vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "Find [f]iles" })
-		vim.keymap.set("n", "<leader>sg", builtin.git_files, { desc = "Find [g]it files" })
-		vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "Find [h]elp tags" })
-		vim.keymap.set("n", "<leader>sb", builtin.current_buffer_fuzzy_find, { desc = "Find in [b]uffer" })
-		vim.keymap.set("n", "<leader>ss", builtin.live_grep, { desc = "Find [s]tring" })
+		vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find [f]iles" })
+		vim.keymap.set("n", "<leader>fg", builtin.git_files, { desc = "Find [g]it files" })
+		vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Find [h]elp tags" })
+		vim.keymap.set("n", "<leader>fb", builtin.current_buffer_fuzzy_find, { desc = "Find in [b]uffer" })
+		vim.keymap.set("n", "<leader>fs", builtin.live_grep, { desc = "Find [s]tring" })
 	end,
 }
