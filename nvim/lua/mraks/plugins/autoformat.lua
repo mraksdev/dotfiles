@@ -31,6 +31,7 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 			python = { "isort", "autoflake", "autopep8" },
+			html = { "prettier" },
 		},
 	},
 }
