@@ -7,7 +7,12 @@ return {
 				"lua_ls",
 				"pyright",
 				"djls",
+				"djlsp",
+				"html",
+				"cssls",
 				"stylua",
+				"bashls",
+				"pico8_ls",
 			},
 		},
 		dependencies = {
