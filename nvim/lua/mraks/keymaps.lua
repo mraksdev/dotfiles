@@ -19,12 +19,8 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Copy nad Paste from sytem clipboard
 vim.keymap.set("n", "<leader>y", '"+y', { desc = "Copy to clipboard" })
 vim.keymap.set("n", "<leader>p", '"+p', { desc = "Paste from clipboard" })
-
--- Navigate slpits
-vim.keymap.set("n", "<C-j>", "<C-w>j")
-vim.keymap.set("n", "<C-k>", "<C-w>k")
-vim.keymap.set("n", "<C-h>", "<C-w>h")
-vim.keymap.set("n", "<C-l>", "<C-w>l")
+vim.keymap.set("v", "<leader>y", '"+y', { desc = "Copy to clipboard" })
+vim.keymap.set("v", "<leader>p", '"+p', { desc = "Paste from clipboard" })
 
 -- Diagnostics
 vim.keymap.set("n", "<leader>od", vim.diagnostic.setloclist, { desc = "[O]pen [d]iagnostic quickfix list" })
