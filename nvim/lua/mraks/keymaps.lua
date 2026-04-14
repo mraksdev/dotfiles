@@ -10,7 +10,7 @@ vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = "File [E]xplorer" })
 
 -- Buffer manipulations
 vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "[W]rite file" })
-vim.keymap.set("n", "<leader>q", ":q<CR>", { desc = "[Q]uit Buffer" })
+vim.keymap.set("n", "<leader>q", ":bd<CR>", { desc = "[Q]uit Buffer" })
 vim.keymap.set("n", "<leader>Q", ":wqa<CR>", { desc = "[Q]uit Nvim" })
 
 -- remove higlights after search on ESC
