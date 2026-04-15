@@ -38,6 +38,9 @@ return {
 			--- with content
 			--- [tool.djlint]
 			--- indent=2
+			---
+			--- link to config docs
+			--- https://djlint.com/docs/configuration/
 			htmldjango = { "djlint" },
 		},
 	},
