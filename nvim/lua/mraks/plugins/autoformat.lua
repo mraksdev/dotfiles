@@ -32,6 +32,13 @@ return {
 			lua = { "stylua" },
 			python = { "isort", "autoflake", "autopep8" },
 			html = { "prettier" },
+			--- For this formater need to crate
+			--- pyproject.toml in root dir of the project
+			--- set indent to 2 like base html
+			--- with content
+			--- [tool.djlint]
+			--- indent=2
+			htmldjango = { "djlint" },
 		},
 	},
 }
