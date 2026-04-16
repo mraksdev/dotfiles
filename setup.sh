@@ -92,5 +92,6 @@ ln -s "$DOTFILES_DIR/zsh/.zshenv" "$HOME/.zshenv"
 ln -s "$DOTFILES_DIR/zsh" "$CONFIG_DIR/zsh"
 ln -s "$DOTFILES_DIR/nvim" "$CONFIG_DIR/nvim"
 ln -s "$DOTFILES_DIR/tmux" "$CONFIG_DIR/tmux"
+ln -s "$DOTFILES_DIR/lf" "$CONFIG_DIR/lf"
 
 echo "Setup complete!"

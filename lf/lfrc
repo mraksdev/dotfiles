@@ -1,0 +1,22 @@
+set hidden true
+set drawbox true
+set icons true
+set ignorecase true
+
+cmd open ${{
+  case$(file --mime-type "$f" -bL) in
+    text/*|application/json) $EDITOR "$f";;
+    *) xdg-open "$f" ;;
+}}
+
+cmd mkdir ${{
+  printf "Directory Name: "
+  read ans
+  mkdir $ans
+}}
+
+cmd mkfile ${{
+  printf "File Name: "
+  read ans
+  $EDITOR $ans
+}}
