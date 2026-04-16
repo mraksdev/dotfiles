@@ -4,7 +4,7 @@ return {
 	cmd = { "ConformInfo" },
 	keys = {
 		{
-			"<leader>f",
+			"<leader>F",
 			function()
 				require("conform").format({ async = true, lsp_format = "fallback" })
 			end,
@@ -38,6 +38,7 @@ return {
 			--- with content
 			--- [tool.djlint]
 			--- indent=2
+			--- max_attribute_length=500
 			---
 			--- link to config docs
 			--- https://djlint.com/docs/configuration/
