@@ -68,6 +68,26 @@ local function on_jump(diagnostic, bufnr)
 	)
 end
 
+local colorcolumn_group = vim.api.nvim_create_augroup("CustomColorcolumn", { clear = true })
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = colorcolumn_group,
+	pattern = "*",
+	callback = function(args)
+		-- Сбрасываем значение по умолчанию (чтобы убрать для всех остальных)
+		vim.opt_local.colorcolumn = ""
+
+		-- Задаём правила для конкретных типов файлов
+		if args.match == "python" then
+			vim.opt_local.colorcolumn = "81"
+		elseif args.match == "lua" then
+			vim.opt_local.colorcolumn = "120"
+		elseif args.match == "html" or args.match == "htmldjango" then
+			vim.opt_local.colorcolumn = "300"
+		end
+	end,
+})
+
 vim.diagnostic.config({
 	update_in_insert = false,
 	severity_sort = true,
