@@ -24,7 +24,7 @@ needs_backup() {
 # Create backup directory only if needed
 if needs_backup "$CONFIG_DIR/zsh" || needs_backup "$HOME/.zshrc" || \
    needs_backup "$HOME/.zshenv" || needs_backup "$CONFIG_DIR/nvim" || \
-   needs_backup "$CONFIG_DIR/tmux"; then
+   needs_backup "$CONFIG_DIR/tmux" || needs_backup "$CONFIG_DIR/lf"; then
   mkdir -p "$BACKUP_DIR"
   BACKUP_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
   echo "Existing configurations found. Creating backups..."
@@ -70,13 +70,21 @@ elif [ -d "$CONFIG_DIR/tmux" ]; then
   mv "$CONFIG_DIR/tmux" "$BACKUP_DIR/tmux_$BACKUP_TIMESTAMP"
 fi
 
+if [ -L "$CONFIG_DIR/lf" ]; then
+  echo "Removing symlink $CONFIG_DIR/lf..."
+  rm "$CONFIG_DIR/lf"
+elif [ -d "$CONFIG_DIR/lf" ]; then
+  echo "Backing up $CONFIG_DIR/lf..."
+  mv "$CONFIG_DIR/lf" "$BACKUP_DIR/lf_$BACKUP_TIMESTAMP"
+fi
+
 if [ -n "$BACKUP_TIMESTAMP" ]; then
   echo "Configurations backed up to $BACKUP_DIR"
 fi
 
 # Verify subdirectories exist before linking
 echo "Verifying dotfiles structure..."
-for dir in "zsh" "nvim" "tmux"; do
+for dir in "zsh" "nvim" "tmux" "lf"; do
   if [ ! -d "$DOTFILES_DIR/$dir" ]; then
     echo "Warning: $DOTFILES_DIR/$dir not found, skipping..."
     continue
