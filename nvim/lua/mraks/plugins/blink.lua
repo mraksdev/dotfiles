@@ -38,8 +38,6 @@ return {
 			--
 			-- See :h blink-cmp-config-keymap for defining your own keymap
 			preset = "enter", -- enter, default, super-tab, none
-			["<Tab>"] = { "select_next", "fallback" },
-			["<S-Tab>"] = { "select_prev", "fallback" },
 		},
 		appearance = {
 			nerd_font_variant = "mono",
