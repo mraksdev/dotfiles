@@ -1,16 +1,16 @@
-#!/bin/bash
+#!/bin/sh
 
 # ==============================================================================
-# Dotfiles Symlink Setup Script (Pretty & Verbose Edition)
+# Dotfiles Symlink Setup Script (POSIX-compliant Pretty & Verbose Edition)
 # ==============================================================================
 # This script safely backs up existing configs and creates symlinks to the
 # dotfiles repository. It provides detailed, formatted output with colors.
 # ==============================================================================
 
-set -e  # Exit on error (can be removed if partial execution preferred)
+set -e  # Exit on error
 
 # --- Terminal Formatting ------------------------------------------------------
-# Colors
+# Colors (using octal escape for strict POSIX compatibility)
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -18,14 +18,14 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 MAGENTA='\033[0;35m'
 WHITE='\033[1;37m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
 # Text styles
 BOLD='\033[1m'
 DIM='\033[2m'
 UNDERLINE='\033[4m'
 
-# Symbols (text only, no emoji)
+# Symbols
 SYM_OK="[OK]"
 SYM_WARN="[WARN]"
 SYM_ERROR="[ERR]"
@@ -37,131 +37,132 @@ SYM_FILE="[FILE]"
 
 # --- Helper Functions ---------------------------------------------------------
 print_separator() {
-    echo -e "${DIM}──────────────────────────────────────────────────────────────────────${NC}"
+    printf "%b──────────────────────────────────────────────────────────────────────%b\n" "$DIM" "$NC"
 }
 
 print_header() {
-    echo -e "\n${BOLD}${WHITE}${1}${NC}"
+    printf "\n%b%s%b\n" "$BOLD$WHITE" "$1" "$NC"
     print_separator
 }
 
 print_success() {
-    echo -e "${GREEN}${SYM_OK} ${1}${NC}"
+    printf "%b%s %s%b\n" "$GREEN" "$SYM_OK" "$1" "$NC"
 }
 
 print_error() {
-    echo -e "${RED}${SYM_ERROR} ${1}${NC}"
+    printf "%b%s %s%b\n" "$RED" "$SYM_ERROR" "$1" "$NC"
 }
 
 print_warning() {
-    echo -e "${YELLOW}${SYM_WARN} ${1}${NC}"
+    printf "%b%s %s%b\n" "$YELLOW" "$SYM_WARN" "$1" "$NC"
 }
 
 print_info() {
-    echo -e "${BLUE}${SYM_INFO} ${1}${NC}"
+    printf "%b%s %s%b\n" "$BLUE" "$SYM_INFO" "$1" "$NC"
 }
 
 print_path_info() {
-    echo -e "  ${DIM}${SYM_DIR} $1${NC}"
+    printf "  %b%s %s%b\n" "$DIM" "$SYM_DIR" "$1" "$NC"
 }
 
 print_backup_info() {
-    echo -e "  ${YELLOW}${SYM_BACKUP} $1 -> $2${NC}"
+    printf "  %b%s %s -> %s%b\n" "$YELLOW" "$SYM_BACKUP" "$1" "$2" "$NC"
 }
 
 print_link_info() {
-    echo -e "  ${CYAN}${SYM_LINK} $1 -> $2${NC}"
+    printf "  %b%s %s -> %s%b\n" "$CYAN" "$SYM_LINK" "$1" "$2" "$NC"
 }
 
-# Check if path needs backup (exists as regular file/dir, not a symlink)
+# Check if path needs backup
 needs_backup() {
-    ([ -f "$1" ] && ! [ -L "$1" ]) || ([ -d "$1" ] && ! [ -L "$1" ])
+    ( [ -f "$1" ] && [ ! -L "$1" ] ) || ( [ -d "$1" ] && [ ! -L "$1" ] )
 }
 
-# Process a configuration path: remove symlink or backup regular file/dir
+# Process a configuration path
 process_path() {
-    local path="$1"
-    local name="$2"
+    _pp_path="$1"
+    _pp_name="$2"
 
-    if [ -L "$path" ]; then
-        print_warning "Removing existing symlink: $path"
-        rm -v "$path" | sed 's/^/    /'
-    elif [ -d "$path" ]; then
-        local backup_name="${name}_${BACKUP_TIMESTAMP}"
-        print_backup_info "$path" "$BACKUP_DIR/$backup_name"
+    if [ -L "$_pp_path" ]; then
+        print_warning "Removing existing symlink: $_pp_path"
+        rm -v "$_pp_path" | sed 's/^/    /'
+    elif [ -d "$_pp_path" ]; then
+        _backup_name="${_pp_name}_${BACKUP_TIMESTAMP}"
+        print_backup_info "$_pp_path" "$BACKUP_DIR/$_backup_name"
         mkdir -p "$BACKUP_DIR"
-        mv -v "$path" "$BACKUP_DIR/$backup_name" | sed 's/^/    /'
-    elif [ -f "$path" ]; then
-        local backup_name="${name}_${BACKUP_TIMESTAMP}"
-        print_backup_info "$path" "$BACKUP_DIR/$backup_name"
+        mv -v "$_pp_path" "$BACKUP_DIR/$_backup_name" | sed 's/^/    /'
+    elif [ -f "$_pp_path" ]; then
+        _backup_name="${_pp_name}_${BACKUP_TIMESTAMP}"
+        print_backup_info "$_pp_path" "$BACKUP_DIR/$_backup_name"
         mkdir -p "$BACKUP_DIR"
-        mv -v "$path" "$BACKUP_DIR/$backup_name" | sed 's/^/    /'
+        mv -v "$_pp_path" "$BACKUP_DIR/$_backup_name" | sed 's/^/    /'
     else
-        print_info "No existing item at $path"
+        print_info "No existing item at $_pp_path"
     fi
 }
 
-# Create a symlink with verbose output
+# Create a symlink
 create_symlink() {
-    local src="$1"
-    local dst="$2"
-    local desc="$3"
+    _cs_src="$1"
+    _cs_dst="$2"
+    _cs_desc="$3"
 
-    print_info "Creating symlink for ${BOLD}${desc}${NC}"
-    print_link_info "$dst" "$src"
-    if ln -s -v "$src" "$dst" | sed 's/^/    /'; then
+    print_info "Creating symlink for %b%s%b" "$BOLD" "$_cs_desc" "$NC"
+    print_link_info "$_cs_dst" "$_cs_src"
+    if ln -s -v "$_cs_src" "$_cs_dst" | sed 's/^/    /'; then
         print_success "Symlink created successfully."
     else
-        print_error "Failed to create symlink $dst"
+        print_error "Failed to create symlink $_cs_dst"
         exit 1
     fi
     echo
 }
 
 # --- Main Script --------------------------------------------------------------
-clear  # Optional: start with a clean screen
+clear 2>/dev/null || true
 
-echo -e "${BOLD}${MAGENTA}"
-echo "  +======================================================================+"
-echo "  |                 DOTFILES SYMLINK SETUP SCRIPT                         |"
-echo "  +======================================================================+"
-echo -e "${NC}"
+printf "%b\n" "${BOLD}${MAGENTA}"
+printf "  +======================================================================+\n"
+printf "  |                 DOTFILES SYMLINK SETUP SCRIPT                         |\n"
+printf "  +======================================================================+\n"
+printf "%b\n" "${NC}"
 
 # --- Variables ----------------------------------------------------------------
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG_DIR="$HOME/.config"
 BACKUP_DIR="$HOME/backup/dotfiles"
 BACKUP_TIMESTAMP=""
 BACKUP_NEEDED=false
 
 print_header "ENVIRONMENT INFORMATION"
-print_info "Dotfiles directory : ${BOLD}$DOTFILES_DIR${NC}"
-print_info "Config directory   : ${BOLD}$CONFIG_DIR${NC}"
-print_info "Backup directory   : ${BOLD}$BACKUP_DIR${NC}"
+print_info "Dotfiles directory : %b%s%b" "$BOLD" "$DOTFILES_DIR" "$NC"
+print_info "Config directory   : %b%s%b" "$BOLD" "$CONFIG_DIR" "$NC"
+print_info "Backup directory   : %b%s%b" "$BOLD" "$BACKUP_DIR" "$NC"
 
 # --- Ensure config directory exists early -------------------------------------
 print_header "PREPARING TARGET DIRECTORY"
-print_info "Ensuring ${BOLD}$CONFIG_DIR${NC} exists..."
+print_info "Ensuring %b%s%b exists..." "$BOLD" "$CONFIG_DIR" "$NC"
 mkdir -p -v "$CONFIG_DIR" | sed 's/^/    /'
 print_success "Target directory is ready."
 
 # --- Pre-check: Source directories existence ----------------------------------
 print_header "VERIFYING SOURCE STRUCTURE"
-declare -a REQUIRED_DIRS=("zsh" "nvim" "tmux" "lf")
-declare -a missing_dirs=()
 
-for dir in "${REQUIRED_DIRS[@]}"; do
+REQUIRED_DIRS="zsh nvim tmux lf"
+missing_dirs=""
+
+for dir in $REQUIRED_DIRS; do
     if [ -d "$DOTFILES_DIR/$dir" ]; then
-        print_success "Found source directory: ${BOLD}$dir${NC}"
+        print_success "Found source directory: %b%s%b" "$BOLD" "$dir" "$NC"
     else
         print_error "Missing source directory: $dir"
-        missing_dirs+=("$dir")
+        missing_dirs="$missing_dirs $dir"
     fi
 done
 
-if [ ${#missing_dirs[@]} -gt 0 ]; then
+if [ -n "$missing_dirs" ]; then
     echo
-    print_error "Missing required directories in dotfiles: ${missing_dirs[*]}"
+    print_error "Missing required directories in dotfiles:%s" "$missing_dirs"
     print_error "Cannot proceed. Please ensure all directories exist."
     exit 1
 fi
@@ -174,16 +175,16 @@ print_success "All required files and directories are present."
 
 # --- Check existing configurations and prepare backup -------------------------
 print_header "CHECKING EXISTING CONFIGURATIONS"
-declare -a TARGETS=(
-    "$CONFIG_DIR/zsh"
-    "$HOME/.zshrc"
-    "$HOME/.zshenv"
-    "$CONFIG_DIR/nvim"
-    "$CONFIG_DIR/tmux"
-    "$CONFIG_DIR/lf"
-)
 
-for target in "${TARGETS[@]}"; do
+set -- \
+    "$CONFIG_DIR/zsh" \
+    "$HOME/.zshrc" \
+    "$HOME/.zshenv" \
+    "$CONFIG_DIR/nvim" \
+    "$CONFIG_DIR/tmux" \
+    "$CONFIG_DIR/lf"
+
+for target do
     if needs_backup "$target"; then
         print_warning "Regular file/directory found: $target (will be backed up)"
         BACKUP_NEEDED=true
@@ -199,7 +200,7 @@ done
 
 if [ "$BACKUP_NEEDED" = true ]; then
     BACKUP_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-    print_info "Backup timestamp: ${BOLD}$BACKUP_TIMESTAMP${NC}"
+    print_info "Backup timestamp: %b%s%b" "$BOLD" "$BACKUP_TIMESTAMP" "$NC"
 fi
 echo
 
@@ -214,7 +215,7 @@ process_path "$CONFIG_DIR/lf" "lf"
 
 if [ -n "$BACKUP_TIMESTAMP" ]; then
     echo
-    print_success "Backups saved to: ${BOLD}$BACKUP_DIR${NC}"
+    print_success "Backups saved to: %b%s%b" "$BOLD" "$BACKUP_DIR" "$NC"
 fi
 
 # --- Create symlinks ----------------------------------------------------------
@@ -227,7 +228,7 @@ create_symlink "$DOTFILES_DIR/lf" "$CONFIG_DIR/lf" "Lf file manager configuratio
 
 # --- Final Summary ------------------------------------------------------------
 print_separator
-echo -e "${GREEN}${BOLD}${SYM_OK} SETUP COMPLETED SUCCESSFULLY!${NC}"
+printf "%b%s SETUP COMPLETED SUCCESSFULLY!%b\n" "$GREEN$BOLD" "$SYM_OK" "$NC"
 echo
-print_info "You may need to restart your shell or run: ${BOLD}source ~/.zshrc${NC}"
-echo -e "${DIM}──────────────────────────────────────────────────────────────────────${NC}\n"
+print_info "You may need to restart your shell or run: %bsource ~/.zshrc%b" "$BOLD" "$NC"
+printf "%b──────────────────────────────────────────────────────────────────────%b\n\n" "$DIM" "$NC"
