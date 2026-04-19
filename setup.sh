@@ -107,7 +107,7 @@ create_symlink() {
     _cs_dst="$2"
     _cs_desc="$3"
 
-    print_info "Creating symlink for %b%s%b" "$BOLD" "$_cs_desc" "$NC"
+    printf "%b->%b Creating symlink for %b%s%b\n" "$BLUE" "$NC" "$BOLD" "$_cs_desc" "$NC"
     print_link_info "$_cs_dst" "$_cs_src"
     if ln -s -v "$_cs_src" "$_cs_dst" | sed 's/^/    /'; then
         print_success "Symlink created successfully."
@@ -135,13 +135,13 @@ BACKUP_TIMESTAMP=""
 BACKUP_NEEDED=false
 
 print_header "ENVIRONMENT INFORMATION"
-print_info "Dotfiles directory : %b%s%b" "$BOLD" "$DOTFILES_DIR" "$NC"
-print_info "Config directory   : %b%s%b" "$BOLD" "$CONFIG_DIR" "$NC"
-print_info "Backup directory   : %b%s%b" "$BOLD" "$BACKUP_DIR" "$NC"
+printf "%b->%b Dotfiles directory : %b%s%b\n" "$BLUE" "$NC" "$BOLD" "$DOTFILES_DIR" "$NC"
+printf "%b->%b Config directory   : %b%s%b\n" "$BLUE" "$NC" "$BOLD" "$CONFIG_DIR" "$NC"
+printf "%b->%b Backup directory   : %b%s%b\n" "$BLUE" "$NC" "$BOLD" "$BACKUP_DIR" "$NC"
 
 # --- Ensure config directory exists early -------------------------------------
 print_header "PREPARING TARGET DIRECTORY"
-print_info "Ensuring %b%s%b exists..." "$BOLD" "$CONFIG_DIR" "$NC"
+printf "%b->%b Ensuring %b%s%b exists...\n" "$BLUE" "$NC" "$BOLD" "$CONFIG_DIR" "$NC"
 mkdir -p -v "$CONFIG_DIR" | sed 's/^/    /'
 print_success "Target directory is ready."
 
@@ -153,7 +153,7 @@ missing_dirs=""
 
 for dir in $REQUIRED_DIRS; do
     if [ -d "$DOTFILES_DIR/$dir" ]; then
-        print_success "Found source directory: %b%s%b" "$BOLD" "$dir" "$NC"
+        printf "%b[OK]%b Found source directory: %b%s%b\n" "$GREEN" "$NC" "$BOLD" "$dir" "$NC"
     else
         print_error "Missing source directory: $dir"
         missing_dirs="$missing_dirs $dir"
@@ -162,7 +162,7 @@ done
 
 if [ -n "$missing_dirs" ]; then
     echo
-    print_error "Missing required directories in dotfiles:%s" "$missing_dirs"
+    print_error "Missing required directories in dotfiles:$missing_dirs"
     print_error "Cannot proceed. Please ensure all directories exist."
     exit 1
 fi
@@ -200,7 +200,7 @@ done
 
 if [ "$BACKUP_NEEDED" = true ]; then
     BACKUP_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-    print_info "Backup timestamp: %b%s%b" "$BOLD" "$BACKUP_TIMESTAMP" "$NC"
+    printf "%b->%b Backup timestamp: %b%s%b\n" "$BLUE" "$NC" "$BOLD" "$BACKUP_TIMESTAMP" "$NC"
 fi
 echo
 
@@ -215,7 +215,7 @@ process_path "$CONFIG_DIR/lf" "lf"
 
 if [ -n "$BACKUP_TIMESTAMP" ]; then
     echo
-    print_success "Backups saved to: %b%s%b" "$BOLD" "$BACKUP_DIR" "$NC"
+    printf "%b[OK]%b Backups saved to: %b%s%b\n" "$GREEN" "$NC" "$BOLD" "$BACKUP_DIR" "$NC"
 fi
 
 # --- Create symlinks ----------------------------------------------------------
@@ -230,5 +230,5 @@ create_symlink "$DOTFILES_DIR/lf" "$CONFIG_DIR/lf" "Lf file manager configuratio
 print_separator
 printf "%b%s SETUP COMPLETED SUCCESSFULLY!%b\n" "$GREEN$BOLD" "$SYM_OK" "$NC"
 echo
-print_info "You may need to restart your shell or run: %bsource ~/.zshrc%b" "$BOLD" "$NC"
+printf "%b->%b You may need to restart your shell or run: %bsource ~/.zshrc%b\n" "$BLUE" "$NC" "$BOLD" "$NC"
 printf "%b──────────────────────────────────────────────────────────────────────%b\n\n" "$DIM" "$NC"
