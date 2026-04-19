@@ -5,9 +5,11 @@ return {
 		-- optional but recommended
 		{ "nvim-telescope/telescope-fzf-native.nvim" },
 	},
-	defaults = {
-		preview = {
-			treesitter = true,
+	opts = {
+		defaults = {
+			preview = {
+				treesitter = true,
+			},
 		},
 	},
 	config = function()
