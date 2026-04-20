@@ -4,7 +4,11 @@
   Документация: :h vim.keymap.set
 --]]
 
-local map = vim.keymap.set
+local function map(mode, lhs, rhs, opts)
+	opts = opts or {}
+	opts.desc = opts.desc or ""
+	vim.keymap.set(mode, lhs, rhs, opts)
+end
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -25,8 +29,8 @@ map("n", "<leader>q", ":bd<CR>", { desc = "[Q]uit buffer" })
 map("n", "<leader>Q", ":wqa<CR>", { desc = "[Q]uit Neovim (save all)" })
 
 -- Управление отступами (соответствует движению H/влево, L/вправо)
-map("n", "<C-H>", "<<_", { desc = "Decrease indent" })
-map("n", "<C-L>", ">>_", { desc = "Increase indent" })
+-- map("n", "<C-H>", preserve_cursor("V<"), { desc = "Decrease indent" })
+-- map("n", "<C-L>", preserve_cursor("V>"), { desc = "Increase indent" })
 map("v", "<C-H>", "<gv", { desc = "Decrease indent and reselect" })
 map("v", "<C-L>", ">gv", { desc = "Increase indent and reselect" })
 
