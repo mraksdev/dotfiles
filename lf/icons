@@ -1,0 +1,109 @@
+# file types
+ln             # LINK
+or             # ORPHAN
+tw      t       # STICKY_OTHER_WRITABLE
+ow             # OTHER_WRITABLE
+st      t       # STICKY
+di             # DIR
+pi      p       # FIFO
+so      s       # SOCK
+bd      b       # BLK
+cd      c       # CHR
+su      u       # SETUID
+sg      g       # SETGID
+ex             # EXEC
+fi             # FILE
+
+# extensions
+*.styl          
+*.sass          
+*.scss          
+*.htm           
+*.html          
+*.css           
+*.less          
+*.md            
+*.markdown      
+*.json          
+*.js            
+*.mjs           
+*.jsx           
+*.rb            
+*.php           
+*.py            
+*.coffee        
+*.mustache      
+*.hbs           
+*.conf          
+*.ini           
+*.yml           
+*.yaml          
+*.toml          
+*.jpg           
+*.jpeg          
+*.png           
+*.gif           
+*.webp          
+*.svg           
+*.cpp           
+*.c             
+*.h             󰌝
+*.cs            󰌛
+*.go            
+*.rs            
+*.ts            
+*.tsx           
+*.sh            
+*.bash          
+*.zsh           
+*.fish          
+*.vim           
+*.ai            
+*.psd           
+*.swift         
+*.ex            
+*.exs           
+
+# file names
+*gruntfile.js           
+*gulpfile.js            
+*dockerfile             
+*Makefile               
+*CMakeLists.txt         
+
+# archives
+*.tar   
+*.zip   
+*.gz    
+*.bz2   
+*.rar   
+*.7z    
+*.xz    
+
+# images
+*.jpg   
+*.jpeg  
+*.gif   
+*.png   
+*.svg   
+
+# audio
+*.mp3   󰎙
+*.flac  󰎙
+*.wav   󰎙
+*.ogg   󰎙
+
+# video
+*.mp4   󰕧
+*.mkv   󰕧
+*.avi   󰕧
+*.mov   󰕧
+
+# documents
+*.pdf   󰀱
+*.doc   󰈙
+*.docx  󰈙
+*.xls   󰈚
+*.xlsx  󰈚
+*.ppt   󰈦
+*.pptx  󰈦
