@@ -50,10 +50,6 @@ return {
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
 		},
-		cmdline = {
-			enabled = true,
-			sources = {},
-		},
 		snippets = { preset = "luasnip" },
 		fuzzy = { implementation = "lua" },
 		signature = { enabled = true },

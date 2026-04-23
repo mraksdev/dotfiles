@@ -29,7 +29,7 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Aliases
 alias v='nvim'
-alias ya='cd /mnt/c/Users/akryl/Desktop/Yandex/'
+alias ya='cd /mnt/c/Mraks/Work/Yandex/'
 alias farm='cd /mnt/c/Users/akryl/AppData/LocalLow/TheFarmerWasReplaced/TheFarmerWasReplaced/Saves/'
 alias c="clear"
 alias ls="lsd"
